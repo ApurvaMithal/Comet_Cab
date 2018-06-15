@@ -11,7 +11,7 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="homeDetails.js"></script>
-	<title>Welcome Page</title>
+	<title>Welcome User</title>
 <%-- 	<script>
 	$(function() {
 		$(".dropdown-menu li a").click(function(){
