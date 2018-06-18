@@ -1,34 +1,33 @@
 package model;
 
 public class Trip {
-	private String driverId;
-	private Cab cab;
+	private Driver driver;
 	private Booking book;
-	
-	public Trip(String driverId, Cab cab, Booking book) {
+
+	public Trip(Driver driver, Booking book) {
 		super();
-		this.driverId = driverId;
-		this.cab = cab;
+		this.driver = driver;
 		this.book = book;
 	}
-	
-	public String getDriverId() {
-		return driverId;
+
+	public Trip() {
+		// TODO Auto-generated constructor stub
 	}
-	public void setDriverId(String driverId) {
-		this.driverId = driverId;
+
+	public Driver getDriver() {
+		return driver;
 	}
-	public Cab getCab() {
-		return cab;
+
+	public void setDriver(Driver driver) {
+		this.driver = driver;
 	}
-	public void setCab(Cab cab) {
-		this.cab = cab;
-	}
+
 	public Booking getBook() {
 		return book;
 	}
+
 	public void setBook(Booking book) {
 		this.book = book;
 	}
-	
+
 }

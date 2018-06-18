@@ -1,8 +1,11 @@
 package service;
 import domain.login.BookingDAO;
 import domain.login.BookingDAOImpl;
+import model.Booking;
 import model.CabType;
+import model.Driver;
 import model.Location;
+import model.Trip;
 
 public class BookingServiceImpl implements BookingService{
 
@@ -14,16 +17,24 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public String makeBooking(String netId, Location location, float fare) {
-		// TODO Auto-generated method stub
-		return null;
+	public Trip makeBooking(String netId, Location location, float fare, CabType cabType) {
+		Driver allocatedDriver=allocateRide(cabType);
+		Trip trip=null;
+		if(allocatedDriver == null) {
+			return trip;
+		}
+		Booking newBooking = new Booking(location, fare, cabType, netId);
+		int id=bookingDao.saveBooking(newBooking);
+		newBooking.setBookingId(id);
+		return new Trip(allocatedDriver, newBooking);
 	}
 
-	/*@Override
-	public Driver allocateRide(String bookingId) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
+	
+	private Driver allocateRide(CabType cabType) {
+		
+		Driver availableDriver=bookingDao.getAvailableDriver(cabType);
+		return availableDriver;
+	}
 
 
 }

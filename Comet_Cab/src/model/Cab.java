@@ -6,14 +6,15 @@ public class Cab {
 	private float ratePerMile;
 	private String model;
 	private CabType cabType;
+	private boolean availabilty;
 
-	public Cab(String vehicleType, String licensePlateNo, float ratePerMile,String model,CabType cabType) {
+	public Cab(String vehicleType, String licensePlateNo, float ratePerMile, String model, CabType cabType) {
 		super();
 		this.vehicleType = vehicleType;
 		this.licensePlateNo = licensePlateNo;
 		this.ratePerMile = ratePerMile;
-		this.model=model;
-		this.cabType=cabType;
+		this.model = model;
+		this.cabType = cabType;
 	}
 
 	public String getVehicleType() {
@@ -39,7 +40,7 @@ public class Cab {
 	public void setRatePerMile(float ratePerMile) {
 		this.ratePerMile = ratePerMile;
 	}
-	
+
 	public String getModel() {
 		return model;
 	}
@@ -54,5 +55,13 @@ public class Cab {
 
 	public void setCabType(CabType cabType) {
 		this.cabType = cabType;
+	}
+
+	public boolean isAvailabilty() {
+		return availabilty;
+	}
+
+	public void setAvailabilty(boolean availabilty) {
+		this.availabilty = availabilty;
 	}
 }

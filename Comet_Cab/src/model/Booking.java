@@ -2,6 +2,7 @@ package model;
 
 public class Booking {
 
+	private int bookingId;
 	private Location location;
 	private float fare;
 	private CabType cabType;
@@ -46,5 +47,13 @@ public class Booking {
 
 	public void setNetId(String netId) {
 		this.netId = netId;
+	}
+
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
 	}
 }

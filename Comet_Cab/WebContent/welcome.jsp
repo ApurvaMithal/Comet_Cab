@@ -117,16 +117,19 @@
 <div class="row">
 	<div class="col-md-5"></div>
 	<div class="col-md-5">
-		<button type="button" class="btn btn-danger" style="height:30px;width:200px" id="estimateButton">Estimate Ride Fare</button>
+		<button type="button" class="btn btn-danger" style="height:30px;width:200px" id="estimateButton" name= "submit" value="estimateFare">Estimate Ride Fare</button>
 	</div>
 </div>
 </br></br>
 <div class="row">
 	<div class="col-md-5"></div>
 	<div class="col-md-5">
-	<button type="button" class="btn btn-basic disabled" id="confirm" style="height:30px;width:200px">Confirm Booking </button>
+	<button type="button" class="btn btn-basic disabled" id="confirm" style="height:30px;width:200px" name= "submit" value="makeBooking">Confirm Booking </button>
 	</div>
 </div>
+
+<input type="hidden" name="netId" value=${netId} id="netId"> </input>
+<input type="hidden" name="fare" value="None" id="fare"> </input>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -150,7 +153,27 @@
 </div>
 </br></br>
 
-<input type="hidden" name="netId" value=${netId} id="netId"> </input>
+<div id="myModalBook" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="head">Message</h4>
+      </div>
+      <div class="modal-body" id = "book">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 <a href="logout.jsp" ><h5><p class="text-success">LOGOUT</p><h5></a>
 </body>
 </html>

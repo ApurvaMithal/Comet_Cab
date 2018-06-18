@@ -3,16 +3,20 @@ package model;
 public class Driver extends Person {
 	
 	private String driverId;
-	private boolean availabilty;
 	private float milesDriven;
-	private Cab cab;
+	private String licenseNo;
+	private String phoneNo;
 	
-	public Driver(String firstNm, String middleNm, String lastNm, String driverId, boolean avail, float miles, Cab cab){
+	public Driver(String firstNm, String middleNm, String lastNm, String driverId, float miles, String licenseNo,String phoneNo){
 		super(firstNm,middleNm,lastNm);
 		this.driverId = driverId;
-		this.availabilty = avail;
 		this.milesDriven = miles; 
-		this.cab = cab;
+		this.licenseNo = licenseNo;
+		this.phoneNo=phoneNo;
+	}
+
+	public Driver() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getFirstName() {
@@ -47,14 +51,6 @@ public class Driver extends Person {
 		this.driverId = driverId;
 	}
 
-	public boolean isAvailabilty() {
-		return availabilty;
-	}
-
-	public void setAvailabilty(boolean availabilty) {
-		this.availabilty = availabilty;
-	}
-
 	public float getMilesDriven() {
 		return milesDriven;
 	}
@@ -63,12 +59,21 @@ public class Driver extends Person {
 		this.milesDriven = milesDriven;
 	}
 	
-	public Cab getCab() {
-		return cab;
+
+	public String getPhoneNo() {
+		return phoneNo;
 	}
 
-	public void setCab(Cab cab) {
-		this.cab = cab;
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public String getLicenseNo() {
+		return licenseNo;
+	}
+
+	public void setLicenseNo(String licenseNo) {
+		this.licenseNo = licenseNo;
 	}
 
 }

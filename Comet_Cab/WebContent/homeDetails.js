@@ -19,6 +19,7 @@ $(document).ready(function() {
 	        var drop = $('#drop').text();
 	        var cab = $('#cab').text();
 	        var netId = $('#netId').val();
+	        var submit = $('#estimateButton').val();
 	        
 	        if($('#pick').val()=="None"){
         		if(!($("#confirm").hasClass('disabled')))
@@ -54,9 +55,47 @@ $(document).ready(function() {
 	                pick: pick,
 	                drop: drop,
 	                cab: cab,
-	                netId : netId
+	                netId : netId,
+	                submit: submit
 	            },
 	            success: function(data) {
+	            	   
+	            		$('#fare').val(data);
+	            		if(($("#confirm").hasClass('disabled')))
+	            			$("#confirm").removeClass('disabled');
+	            		
+		            	$('#estimate').html('<p>'+ "Estimated Fare Is: " + data+ '</br>' + "Please Confirm The Ride. " + '</p>');
+		            	$("#myModal").modal();
+		            	
+	            	
+	            }
+	        });
+        	}
+	    });
+	    
+	    
+	    
+    $("#confirm").click(function(event) {
+	        
+	        var pick = $('#pick').text();
+	        var drop = $('#drop').text();
+	        var cab = $('#cab').text();
+	        var netId = $('#netId').val();
+	        var submit = $('#confirm').val();
+	        var fare = $('#fare').val();
+	        jQuery.ajax({
+	            url: "BookingController",
+	            type: "post",
+	            dataType: "text",
+	            data: {
+	                pick: pick,
+	                drop: drop,
+	                cab: cab,
+	                netId : netId,
+	                submit: submit,
+	                fare: fare
+	            },
+	            success: function(dataBook) {
 	            	
 	            	/*
 	            	 else if( not enough balance){
@@ -65,22 +104,14 @@ $(document).ready(function() {
 	            		$('#estimate').html('<p>'+'INSUFFICIENT CARD BALANCE'+'</p>');
 		            	$("#myModal").modal();	
 	            	}
-	            	else if(cab type not available){
-	            		if(!($("#confirm").hasClass('disabled')))
-	            			$("#confirm").addClass('disabled');
-	            		$('#estimate').html('<p>'+'Cab Type not available currently. Please try after some time or choose another cab type'+'</p>');
-		            	$("#myModal").modal();	
-	            		}
+	            	
 	            	*/
-	            		if(($("#confirm").hasClass('disabled')))
-	            			$("#confirm").removeClass('disabled');
-	            		
-		            	$('#estimate').html('<p>'+data+  '</br>' + "Please Confirm The Ride. " + '</p>');
-		            	$("#myModal").modal();
+		            	$('#book').html('<p>'+dataBook+'</p>');
+		            	$("#myModalBook").modal();
 		           	
 	            	
 	            }
 	        });
-        	}
+        	
 	    });
 });
