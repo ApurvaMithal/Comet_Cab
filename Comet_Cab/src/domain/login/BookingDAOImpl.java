@@ -37,6 +37,32 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 
 	@Override
+	public float estimateFare(Location location, CabType cabType) {
+		int distance=getDistance(location);
+		return (distance*cabType.getMultiplier());
+	}
+	
+	
+	@Override
+	public boolean checkBalance(String netId, float fare) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean checkCabAvailability(CabType cabType) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override 	
+   public Driver allocateRide(CabType cabType) {
+		
+		Driver availableDriver=getAvailableDriver(cabType);
+		return availableDriver;
+	}
+	
+	@Override
 	public int saveBooking(Booking booking) {
 
 		int id = 0;
@@ -87,4 +113,8 @@ public class BookingDAOImpl implements BookingDAO {
 		}
 		return driver;
 	}
+
+	
+	
+	
 }

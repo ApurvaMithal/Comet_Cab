@@ -43,7 +43,8 @@ public class BookingController extends HttpServlet {
 			BookingService bookingService = new BookingServiceImpl();
 			CabType cabType = CabType.valueOf(cab.trim());
 			Location location = new Location(Place.valueOf(pickLoc.trim()), Place.valueOf(dropLoc.trim()));
-			fare = bookingService.estimateFare(location, cabType);
+		//	fare = bookingService.estimateFare(location, cabType);
+			fare=0;
 			res = String.valueOf(fare);
 			response.setContentType("application/text");
 			response.getWriter().print(res);
@@ -61,11 +62,11 @@ public class BookingController extends HttpServlet {
 			BookingService bookingService = new BookingServiceImpl();
 			CabType cabType = CabType.valueOf(cab.trim());
 			Location location = new Location(Place.valueOf(pickLoc.trim()), Place.valueOf(dropLoc.trim()));
-			trip = bookingService.makeBooking(netId, location, Float.valueOf(estfare), cabType);
+			bookingService.confirmBooking(netId, location, Float.valueOf(estfare), cabType);
 			
 			response.setContentType("application/text");
 			String tripDetails="";
-			if(trip==null) {
+		/*	if(trip==null) {
 				tripDetails = "Currently "+ cab + " is not available. Please choose another Cab Type or try after sometime. ";
 			}
 			else {
@@ -75,6 +76,7 @@ public class BookingController extends HttpServlet {
 				tripDetails += "Cab Number: "+ trip.getDriver().getLicenseNo()+"</br>";
 				tripDetails += "Your Cab will arrive in 5 minutes.\n";
 			}
+			*/
 			System.out.println(tripDetails);
 			response.getWriter().print(tripDetails);
 	}

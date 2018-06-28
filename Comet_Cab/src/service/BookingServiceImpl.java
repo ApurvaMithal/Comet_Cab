@@ -3,6 +3,7 @@ import domain.login.BookingDAO;
 import domain.login.BookingDAOImpl;
 import model.Booking;
 import model.CabType;
+import model.CardDetails;
 import model.Driver;
 import model.Location;
 import model.Trip;
@@ -10,31 +11,53 @@ import model.Trip;
 public class BookingServiceImpl implements BookingService{
 
 	BookingDAO bookingDao = new BookingDAOImpl();
+	
 	@Override
-	public float estimateFare(Location location, CabType cabType) {
-		int distance=bookingDao.getDistance(location);
-		return (distance*cabType.getMultiplier());
-	}
-
-	@Override
-	public Trip makeBooking(String netId, Location location, float fare, CabType cabType) {
-		Driver allocatedDriver=allocateRide(cabType);
-		Trip trip=null;
-		if(allocatedDriver == null) {
-			return trip;
-		}
-		Booking newBooking = new Booking(location, fare, cabType, netId);
-		int id=bookingDao.saveBooking(newBooking);
-		newBooking.setBookingId(id);
-		return new Trip(allocatedDriver, newBooking);
+	public float makeBooking(String netId, Location location, CabType cabType) { // return fare
+		// TODO Auto-generated method stub
+		
+		float fare= bookingDao.estimateFare(location, cabType);
+		boolean cardBalFlag = bookingDao.checkBalance(netId, fare);
+		boolean cabAvailFlag = bookingDao.checkCabAvailability(cabType);
+		
+		return 0;
 	}
 
 	
-	private Driver allocateRide(CabType cabType) {
+	@Override
+	public Booking confirmBooking(String netId, Location location, float fare, CabType cabType) {
+		Driver allocatedDriver=bookingDao.allocateRide(cabType);
+		Trip trip=null;
+	/*	if(allocatedDriver == null) {
+			return trip;
+		}
+		*/
+		Booking newBooking = new Booking(location, fare, cabType, netId);
+		int id=bookingDao.saveBooking(newBooking);
+		newBooking.setBookingId(id);
+	//	return new Trip(allocatedDriver, newBooking);
+		return null;
+	}
+
+	
+	
+	@Override
+	public void startRide(String bookingid) {
+		// TODO Auto-generated method stub
 		
-		Driver availableDriver=bookingDao.getAvailableDriver(cabType);
-		return availableDriver;
 	}
 
 
+	@Override
+	public void endRide(String bookingid) {
+		// TODO Auto-generated method stub
+		/*
+		@Override
+		public String processPayment(CardDetails crd, float fare) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	*/
+	}
+	
 }
