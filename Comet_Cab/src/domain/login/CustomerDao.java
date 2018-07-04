@@ -18,7 +18,7 @@ public interface CustomerDao {
 	/*
 	 * Retrieve the Customer object from the database
 	 */
-	public Customer validateCustomer(Login login);
+	public Customer validateCustomer(CustomerLogin login);
 
 	
 	//public Customer getCustomer(String username, String pass); This method does not needed as we have the Login object

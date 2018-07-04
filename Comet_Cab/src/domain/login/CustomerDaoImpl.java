@@ -36,7 +36,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public Customer validateCustomer(Login login) {
+	public Customer validateCustomer(CustomerLogin login) {
 		Customer c = new Customer();
 		try{
 			conn = db.getConnection();

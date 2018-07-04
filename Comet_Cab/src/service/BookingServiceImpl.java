@@ -6,7 +6,6 @@ import model.CabType;
 import model.CardDetails;
 import model.Driver;
 import model.Location;
-import model.Trip;
 
 public class BookingServiceImpl implements BookingService{
 
@@ -27,7 +26,6 @@ public class BookingServiceImpl implements BookingService{
 	@Override
 	public Booking confirmBooking(String netId, Location location, float fare, CabType cabType) {
 		Driver allocatedDriver=bookingDao.allocateRide(cabType);
-		Trip trip=null;
 	/*	if(allocatedDriver == null) {
 			return trip;
 		}

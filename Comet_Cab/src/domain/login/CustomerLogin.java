@@ -5,11 +5,11 @@ package domain.login;
  * @author mehra
  * This is the Customer before the validation.
  */
-public class Login {
+public class CustomerLogin {
 	private String username;
 	private String password;
 	
-	public Login(String username, String pass){
+	public CustomerLogin(String username, String pass){
 		this.username = username;
 		this.password = pass;
 	}

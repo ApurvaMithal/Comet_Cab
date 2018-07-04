@@ -7,6 +7,8 @@ public class Booking {
 	private float fare;
 	private CabType cabType;
 	private String netId;
+	private String driverId;
+	private String licenseNo;
 
 	public Booking(Location location, float fare, CabType cabType, String netId) {
 		super();
@@ -51,6 +53,22 @@ public class Booking {
 
 	public int getBookingId() {
 		return bookingId;
+	}
+
+	public String getDriverId() {
+		return driverId;
+	}
+
+	public void setDriverId(String driverId) {
+		this.driverId = driverId;
+	}
+
+	public String getLicenseNo() {
+		return licenseNo;
+	}
+
+	public void setLicenseNo(String licenseNo) {
+		this.licenseNo = licenseNo;
 	}
 
 	public void setBookingId(int bookingId) {

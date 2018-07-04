@@ -3,16 +3,18 @@ package model;
 public class Driver extends Person {
 	
 	private String driverId;
-	private float milesDriven;
-	private String licenseNo;
+	private String password;
 	private String phoneNo;
+	private String licenseNo;
 	
-	public Driver(String firstNm, String middleNm, String lastNm, String driverId, float miles, String licenseNo,String phoneNo){
+	
+	public Driver(String firstNm, String middleNm, String lastNm, String driverId, String password, String phoneNo,  String licenseNo){
 		super(firstNm,middleNm,lastNm);
 		this.driverId = driverId;
-		this.milesDriven = miles; 
-		this.licenseNo = licenseNo;
+		this.password = password;
 		this.phoneNo=phoneNo;
+		this.licenseNo = licenseNo;
+
 	}
 
 	public Driver() {
@@ -51,17 +53,17 @@ public class Driver extends Person {
 		this.driverId = driverId;
 	}
 
-	public float getMilesDriven() {
-		return milesDriven;
-	}
-
-	public void setMilesDriven(float milesDriven) {
-		this.milesDriven = milesDriven;
-	}
-	
 
 	public String getPhoneNo() {
 		return phoneNo;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setPhoneNo(String phoneNo) {

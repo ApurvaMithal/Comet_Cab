@@ -10,51 +10,14 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="homeDetails.js"></script>
+	<script type="text/javascript" src="js/customerWelcome.js"></script>
 	<title>Welcome User</title>
-<%-- 	<script>
-	$(function() {
-		$(".dropdown-menu li a").click(function(){
-				var selText = $(this).text();
-				$(this).parents('.dropdown').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');	
-			});
-		});
-	</script>
-	<script>
-	 jQuery(window).ready(function() {
-		    $("#estimateButton").click(function(event) {
-		        
-		        var pick = $('#pick').text();
-		        var drop = $('#drop').text();
-		        var cab = $('#cab').text();
-		        
-		        jQuery.ajax({
-		            url: "BookingController",
-		            type: "post",
-		         //   dataType: "json",
-		            data: {
-		                pick: pick,
-		                drop: drop,
-		                cab: cab
-		                
-		            },
-		            success: function(data) {
-		                // since we are using jQuery, you don't need to parse response
-		         		alert("inside success");
-		
-		            }
-		        });
-		
-		    });
-	});
-	</script>
-	--%>
+
 
 </head>
 
 <body>
 <h3><i><font color="gray"><center> ${message}</center></font></i></h3>
-<%-- <h3><i><font color="gray"><center> ${netId}</center></font></i></h3>  --%>
 <h3><i><font color="violet"><center> Welcome to Online Comet Cab Booking Site!! </center></font></i></h3></br>
 <br>
 	
@@ -117,14 +80,14 @@
 <div class="row">
 	<div class="col-md-5"></div>
 	<div class="col-md-5">
-		<button type="button" class="btn btn-danger" style="height:30px;width:200px" id="estimateButton" name= "submit" value="estimateFare">Estimate Ride Fare</button>
+		<button type="button" class="btn btn-danger" style="height:30px;width:200px" id="makeBooking" name= "submit" value="makeBooking">Make Booking</button>
 	</div>
 </div>
 </br></br>
 <div class="row">
 	<div class="col-md-5"></div>
 	<div class="col-md-5">
-	<button type="button" class="btn btn-basic disabled" id="confirm" style="height:30px;width:200px" name= "submit" value="makeBooking">Confirm Booking </button>
+	<button type="button" class="btn btn-basic disabled" id="confirmBooking" style="height:30px;width:200px" name= "submit" value="confirmBooking">Confirm Booking </button>
 	</div>
 </div>
 
@@ -132,7 +95,7 @@
 <input type="hidden" name="fare" value="None" id="fare"> </input>
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="makeBookingModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -141,7 +104,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" id="head">Message</h4>
       </div>
-      <div class="modal-body" id = "estimate">
+      <div class="modal-body" id = "make">
         
       </div>
       <div class="modal-footer">
@@ -153,7 +116,7 @@
 </div>
 </br></br>
 
-<div id="myModalBook" class="modal fade" role="dialog">
+<div id="confirmBookingModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -162,7 +125,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" id="head">Message</h4>
       </div>
-      <div class="modal-body" id = "book">
+      <div class="modal-body" id = "confirm">
         
       </div>
       <div class="modal-footer">
@@ -174,6 +137,6 @@
 </div>
 
 
-<a href="logout.jsp" ><h5><p class="text-success">LOGOUT</p><h5></a>
+<a href="customerLogout.jsp" ><h5><p class="text-success">LOGOUT</p><h5></a>
 </body>
 </html>

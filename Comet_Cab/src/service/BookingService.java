@@ -3,7 +3,6 @@ import model.Booking;
 import model.CabType;
 import model.CardDetails;
 import model.Location;
-import model.Trip;
 
 public interface BookingService {
 

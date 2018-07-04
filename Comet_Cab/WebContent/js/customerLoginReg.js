@@ -11,12 +11,12 @@ function regValidate() {
         document.forms["regform"]["username"].focus();
         return false;
     }
-	else if (firstname== "") {  //first
+	else if (firstname== "") {  
         alert("Firstname must be filled out");
         document.forms["regform"]["firstName"].focus();
         return false;
     }
-	else if (phone== "") { //phone
+	else if (phone== "") { 
         alert("Phone Number must be filled out");
         document.forms["regform"]["phoneNo"].focus();
         return false;
@@ -46,14 +46,6 @@ function loginValidate(){
         return false;
     }else if (password== "") {
         alert("password must be filled out");
-        document.forms["loginform"]["password"].focus();
-        return false;
-    }else if (rpassword == "") {
-        alert("retry-password must be filled out");
-        document.forms["loginform"]["retry-password"].focus();
-        return false;
-    }else if(password != rpassword){
-    	alert("password doesnt match");
         document.forms["loginform"]["password"].focus();
         return false;
     }
