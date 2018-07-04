@@ -1,0 +1,33 @@
+@charset "ISO-8859-1";
+ table {
+                border: 1px solid #666;
+                width: 100%; 
+                table-layout: auto;
+            }
+    th {
+                background: #78a0c3;
+                font-weight: bold;
+                padding: 2px;
+            }        
+    tr{
+        cursor:pointer;
+        background: -moz-linear-gradient(top, #ffffff, #D1E3E9);
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#D1E3E9));
+        text-align:center;
+    }
+ /*
+    tr:hover{
+        background: -moz-linear-gradient(top, #249ee4, #057cc0);
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#249ee4), to(#057cc0));
+    }
+ 
+    tr:active
+    {
+        background: -moz-linear-gradient(top, #057cc0, #249ee4);
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#057cc0), to(#249ee4));
+    }
+ */
+    #result{
+        font-weight:bold;
+        font-size:16pt;
+    }
