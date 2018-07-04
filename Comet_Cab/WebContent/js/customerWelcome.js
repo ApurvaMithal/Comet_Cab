@@ -28,7 +28,7 @@ $(document).ready(function() {
         	else if($('#drop').val()=="None"){
         		if(!($("#confirmBooking").hasClass('disabled')))
         			$("#confirmBooking").addClass('disabled');
-        		$('#nake').html('<p>'+'Select a Drop Location '+'</p>');
+        		$('#make').html('<p>'+'Select a Drop Location '+'</p>');
             	$("#makeBookingModal").modal();
         	}
         	else if($('#cab').val()=="None"){
