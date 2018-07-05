@@ -11,12 +11,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import domain.login.DriverDAO;
-import domain.login.DriverDAOImpl;
-import domain.login.DriverLogin;
+import com.google.gson.Gson;
+
+import dao.DriverDAO;
+import dao.DriverDAOImpl;
+import dao.DriverLogin;
 import model.Driver;
 import service.BookingService;
 import service.BookingServiceImpl;
+import views.BookingRequestView;
 
 /**
  * Servlet implementation class DriverLoginController
@@ -67,10 +70,15 @@ public class DriverController extends HttpServlet {
 		}
 		
 		else if(submitType.equals("getRequest")) {
-			JSONArray requests = new JSONArray();
-			JSONObject req= new JSONObject();
-			String driverId = request.getParameter("driverId");
-			try {
+		//	JSONArray requests = new JSONArray();
+		//	JSONObject req= new JSONObject();
+			Integer driverId = Integer.valueOf(request.getParameter("driverId"));
+			BookingService bookingService = new BookingServiceImpl();
+			BookingRequestView view= bookingService.getRequest(driverId);
+			String requests =  new Gson().toJson(view);
+			System.out.println(requests);
+			response.getWriter().print(requests);
+		/*	try {
 				req.put("bookingId", "1");
 				req.put("firstName", "Tim");
 				req.put("middleName", "Williams");
@@ -84,7 +92,7 @@ public class DriverController extends HttpServlet {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
+			*/
 		}
 		
 		else if(submitType.equals("startRide")) {

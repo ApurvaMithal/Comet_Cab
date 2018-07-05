@@ -6,8 +6,17 @@ public class Driver extends Person {
 	private String password;
 	private String phoneNo;
 	private String licenseNo;
+	private boolean availability;
 	
 	
+	public boolean isAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
+	}
+
 	public Driver(String firstNm, String middleNm, String lastNm, String driverId, String password, String phoneNo,  String licenseNo){
 		super(firstNm,middleNm,lastNm);
 		this.driverId = driverId;
@@ -18,7 +27,7 @@ public class Driver extends Person {
 	}
 
 	public Driver() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public String getFirstName() {

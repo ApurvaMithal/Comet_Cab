@@ -1,4 +1,4 @@
-package domain.login;
+package dao;
 
 import model.Booking;
 import model.CabType;
@@ -15,6 +15,6 @@ public interface BookingDAO {
 	abstract boolean checkBalance(String netId, float fare);	
 	abstract boolean checkCabAvailability(CabType cabType);
 	abstract Driver allocateRide(CabType cabType);
-	abstract BookingRequestView getBookingRequests();
+	abstract BookingRequestView getBookingRequests(Integer driverId);
 
 }

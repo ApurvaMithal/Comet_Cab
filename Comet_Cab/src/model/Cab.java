@@ -4,7 +4,6 @@ public class Cab {
 	private String licensePlateNo;
 	private String model;
 	private CabType cabType;
-	private boolean availabilty;
 
 	public Cab(String licensePlateNo, String model, CabType cabType) {
 		super();
@@ -12,7 +11,9 @@ public class Cab {
 		this.model = model;
 		this.cabType = cabType;
 	}
-
+	public Cab() {
+	}
+	
 	public String getLicensePlateNo() {
 		return licensePlateNo;
 	}
@@ -37,11 +38,4 @@ public class Cab {
 		this.cabType = cabType;
 	}
 
-	public boolean isAvailabilty() {
-		return availabilty;
-	}
-
-	public void setAvailabilty(boolean availabilty) {
-		this.availabilty = availabilty;
-	}
 }

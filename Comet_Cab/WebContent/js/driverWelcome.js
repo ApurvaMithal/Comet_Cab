@@ -64,21 +64,22 @@
                 
                 function drawTable(data) {
                 	  $("#userRequest").find("tr:not(:first)").remove();
-                    for (var i = 0; i < data.length; i++) {
+                 /*   for (var i = 0; i < data.length; i++) {
                         drawRow(data[i]);
-                    }
+                    }*/
+                	  drawRow(data);
                 }
 
                 function drawRow(rowData) {
                     var row = $("<tr />");
 	                    $("#userRequest").append(row); 
-	                    row.append($("<td>" + rowData.bookingId + "</td>"));
-	                    row.append($("<td>" + rowData.firstName + "</td>"));
-	                    row.append($("<td>" + rowData.middleName + "</td>"));
-	                    row.append($("<td>" + rowData.lastName + "</td>"));
-	                    row.append($("<td>" + rowData.phoneNo + "</td>"));
-	                    row.append($("<td>" + rowData.pick + "</td>"));
-	                    row.append($("<td>" + rowData.drop + "</td>"));
+	                    row.append($("<td>" + rowData.booking.bookingId + "</td>"));
+	                    row.append($("<td>" + rowData.customer.firstName + "</td>"));
+	                    row.append($("<td>" + rowData.customer.middleName + "</td>"));
+	                    row.append($("<td>" + rowData.customer.lastName + "</td>"));
+	                    row.append($("<td>" + rowData.customer.phoneNo + "</td>"));
+	                    row.append($("<td>" + rowData.booking.location.pickUpLocation + "</td>"));
+	                    row.append($("<td>" + rowData.booking.location.dropOffLocation + "</td>"));
 	                    row.append($("<td>" + "<button type=\"button\" class=\"btn btn-success\" style=\"height:30px;width:100px\" id=\"startRide\" name= \"submit\" value=\"startRide\">Start Ride</button></td>"));
 	                    row.append($("<td>" + "<button type=\"button\" class=\"btn btn-danger\" style=\"height:30px;width:100px\" id=\"endRide\" name= \"submit\" value=\"endRide\">End Ride</button></td>"));
 

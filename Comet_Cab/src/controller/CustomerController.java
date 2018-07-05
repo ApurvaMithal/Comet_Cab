@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.CustomerDao;
+import dao.CustomerDaoImpl;
+import dao.CustomerLogin;
 import model.Booking;
 import model.CabType;
 import model.Customer;
@@ -14,9 +17,6 @@ import model.Location;
 import model.Place;
 import service.BookingService;
 import service.BookingServiceImpl;
-import domain.login.CustomerDao;
-import domain.login.CustomerDaoImpl;
-import domain.login.CustomerLogin;
 
 /**
  * Servlet implementation class Login

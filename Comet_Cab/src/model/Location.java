@@ -10,6 +10,10 @@ public class Location {
 		this.pickUpLocation = pickUpLocation;
 		this.dropOffLocation = dropOffLocation;
 	}
+	
+	public Location() {
+	}
+	
 	public Place getPickUpLocation() {
 		return pickUpLocation;
 	}

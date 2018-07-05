@@ -1,4 +1,4 @@
-package domain.login;
+package dao;
 /**
  * 
  * @author mehra

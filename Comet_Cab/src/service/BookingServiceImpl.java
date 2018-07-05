@@ -1,11 +1,13 @@
 package service;
-import domain.login.BookingDAO;
-import domain.login.BookingDAOImpl;
+import dao.BookingDAO;
+import dao.BookingDAOImpl;
+import exception.ApplicationException;
 import model.Booking;
 import model.CabType;
 import model.CardDetails;
 import model.Driver;
 import model.Location;
+import views.BookingRequestView;
 
 public class BookingServiceImpl implements BookingService{
 
@@ -15,11 +17,15 @@ public class BookingServiceImpl implements BookingService{
 	public float makeBooking(String netId, Location location, CabType cabType) { // return fare
 		// TODO Auto-generated method stub
 		
-		float fare= bookingDao.estimateFare(location, cabType);
-		boolean cardBalFlag = bookingDao.checkBalance(netId, fare);
-		boolean cabAvailFlag = bookingDao.checkCabAvailability(cabType);
-		
-		return 0;
+		float fare = bookingDao.estimateFare(location, cabType);
+		if (!bookingDao.checkBalance(netId, fare)) {
+			throw new ApplicationException("Balance not Sufficient");
+		}
+		if (!bookingDao.checkCabAvailability(cabType)) {
+			throw new ApplicationException("Cab not available");
+		}
+
+		return fare;
 	}
 
 	
@@ -58,4 +64,9 @@ public class BookingServiceImpl implements BookingService{
 	*/
 	}
 	
+	@Override
+	public BookingRequestView getRequest(Integer driverId) {
+		BookingRequestView bookingRequests = bookingDao.getBookingRequests(driverId);
+		return bookingRequests;
+	}
 }

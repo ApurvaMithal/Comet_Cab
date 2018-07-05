@@ -2,9 +2,6 @@ package model;
 
 public class Customer extends Person {
 
-	private String firstName;
-	private String middleName;
-	private String lastName;
 	private String netId;
 	private String password;
 	private String phoneNo;
@@ -18,7 +15,6 @@ public class Customer extends Person {
 	}
 
 	public Customer() {
-		// TODO Auto-generated constructor stub
 		super();
 	}
 

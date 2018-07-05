@@ -12,6 +12,9 @@ public class CardDetails {
 		this.balance = balance;
 		this.cardNo = cardNo;
 	}
+	
+	public CardDetails() {
+	}
 
 	public String getNetId() {
 		return netId;

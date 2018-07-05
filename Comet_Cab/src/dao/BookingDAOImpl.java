@@ -1,4 +1,4 @@
-package domain.login;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import model.CabType;
 import model.Customer;
 import model.Driver;
 import model.Location;
+import model.Place;
 import views.BookingRequestView;
 
 public class BookingDAOImpl implements BookingDAO {
@@ -26,7 +27,7 @@ public class BookingDAOImpl implements BookingDAO {
 			ps = conn.prepareStatement("select * from distancematrix where pick=?");
 			ps.setString(1, location.getPickUpLocation().name());
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				String result = (String) rs.getString(location.getDropOffLocation().name());
 				res = Integer.valueOf(result);
 			}
@@ -47,7 +48,6 @@ public class BookingDAOImpl implements BookingDAO {
 	
 	@Override
 	public boolean checkBalance(String netId, float fare) {
-		// TODO Auto-generated method stub
 		float balance = 0.0f;
 		try {
 
@@ -68,11 +68,10 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public boolean checkCabAvailability(CabType cabType) {
-		// TODO Auto-generated method stub
 		conn = db.getConnection();
 		try {
 			ps = conn.prepareStatement(
-					"select * from driver d, cab c where c.licenseNo=d.licenseNo and cabType=? and c.availability='T'");
+					"select * from driver d, cab c where c.licenseNo=d.licenseNo and cabType=? and d.availability='T'");
 			ps.setString(1, cabType.name());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next() != false) {
@@ -93,7 +92,7 @@ public class BookingDAOImpl implements BookingDAO {
 		conn = db.getConnection();
 		try {
 			ps = conn.prepareStatement(
-					"select firstName, lastName,phoneNo,d.licenseNo from driver d, cab c where c.licenseNo=d.licenseNo and cabType=? and c.availability='T'");
+					"select firstName, lastName,phoneNo,d.licenseNo from driver d, cab c where c.licenseNo=d.licenseNo and cabType=? and d.availability='T'");
 			ps.setString(1, cabType.name());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -148,34 +147,37 @@ public class BookingDAOImpl implements BookingDAO {
 
 	
 	@Override
-	public BookingRequestView getBookingRequests() {
+	public BookingRequestView getBookingRequests(Integer driverId) {
 		conn = db.getConnection();
-	/*	Booking booking = new Booking();
-		Location location = new Location();
-		Customer customer = new Customer();
+		Booking booking = null;
+		Location location = null;
+		Customer customer = null;
 		try {
 			ps = conn.prepareStatement(
-					"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,c.firstName,c.lastName,c.phoneNo from bookings b, customer c where b.driverId is null and b.netId=c.netId");
+					"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,c.firstName, c.middleName, c.lastName,c.phoneNo from bookings b, customer c where b.driverId =?  and b.netId=c.netId");
+			ps.setString(1, driverId.toString());
 			ResultSet rs = ps.executeQuery();
+			
 			if (rs.next()) {
-				
+				booking = new Booking();
+				location = new Location();
+				customer = new Customer();
 				booking.setBookingId(Integer.valueOf((rs.getString(1))));
 				booking.setNetId((rs.getString(2)));
 				location.setPickUpLocation(Place.valueOf(rs.getString(3)));
 				location.setDropOffLocation(Place.valueOf(rs.getString(4)));
 				booking.setLocation(location);
 				customer.setFirstName(rs.getString(5));
-				customer.setLastName(rs.getString(6));
-				customer.setPhoneNo(rs.getString(7));
-
+				customer.setMiddleName(rs.getString(6));
+				customer.setLastName(rs.getString(7));
+				customer.setPhoneNo(rs.getString(8));
 			}
 			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e);
 		}
-		*/
-		return null;
+		return new BookingRequestView(customer, booking);
 
 	}
 

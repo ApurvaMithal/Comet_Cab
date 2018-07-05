@@ -9,6 +9,15 @@ public class Booking {
 	private String netId;
 	private String driverId;
 	private String licenseNo;
+	private String tripStatus;
+	
+	public String getTripStatus() {
+		return tripStatus;
+	}
+
+	public void setTripStatus(String tripStatus) {
+		this.tripStatus = tripStatus;
+	}
 
 	public Booking(Location location, float fare, CabType cabType, String netId) {
 		super();
@@ -17,7 +26,10 @@ public class Booking {
 		this.cabType = cabType;
 		this.netId = netId;
 	}
-
+	
+	public Booking() {
+	}
+	
 	public Location getLocation() {
 		return location;
 	}
