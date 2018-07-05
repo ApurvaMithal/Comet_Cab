@@ -7,12 +7,14 @@ import java.sql.SQLException;
 
 import db.DbManager;
 import model.Booking;
+import model.Cab;
 import model.CabType;
 import model.Customer;
 import model.Driver;
 import model.Location;
 import model.Place;
 import views.BookingRequestView;
+import views.ConfirmBookingView;
 
 public class BookingDAOImpl implements BookingDAO {
 	static Connection conn;
@@ -92,7 +94,7 @@ public class BookingDAOImpl implements BookingDAO {
 		conn = db.getConnection();
 		try {
 			ps = conn.prepareStatement(
-					"select firstName, lastName,phoneNo,d.licenseNo from driver d, cab c where c.licenseNo=d.licenseNo and cabType=? and d.availability='T'");
+					"select firstName, lastName,phoneNo,d.licenseNo,d.driverId from driver d, cab c where c.licenseNo=d.licenseNo and cabType=? and d.availability='T'");
 			ps.setString(1, cabType.name());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -101,6 +103,7 @@ public class BookingDAOImpl implements BookingDAO {
 					driver.setLastName((rs.getString(2)));
 					driver.setPhoneNo((rs.getString(3)));
 					driver.setLicenseNo((rs.getString(4)));
+					driver.setDriverId((rs.getString(5)));
 
 			}
 			conn.close();
@@ -125,13 +128,15 @@ public class BookingDAOImpl implements BookingDAO {
 		int id = 0;
 		String generatedColumns[] = { "ID" };
 		try {
+			System.out.println("Booking ID in DAO : "+booking.getDriverId());
 			conn = db.getConnection();
-			ps=conn.prepareStatement("Insert into bookings(netId,pickupLocation,dropOffLocation,fare,cabtype) values(?,?,?,?,?)",generatedColumns);
+			ps=conn.prepareStatement("Insert into bookings(netId,pickupLocation,dropOffLocation,fare,cabtype,driverId) values(?,?,?,?,?,?)",generatedColumns);
 			ps.setString(1, booking.getNetId());
 			ps.setString(2, booking.getLocation().getPickUpLocation().name());
 			ps.setString(3, booking.getLocation().getDropOffLocation().name());
 			ps.setFloat(4, booking.getFare());
 			ps.setString(5, booking.getCabType().name());
+			ps.setString(6, booking.getDriverId());
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -144,7 +149,34 @@ public class BookingDAOImpl implements BookingDAO {
 		return id;
 
 	}
+//confirm booking code
+	@Override
+	public Cab fetchCabDetails(String DriverId) {
+		Cab cab = null;
+		conn = db.getConnection();
+		try {
+			ps = conn.prepareStatement(
+					"select c.licenseNo,c.model, c.cabType from cab c,driver d where c.licenseNo=d.licenseNo and d.driverId=?");
+			ps.setString(1, DriverId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				    cab = new Cab();
+				    CabType cabType = CabType.valueOf(rs.getString(3).trim());
+					cab.setLicensePlateNo((rs.getString(1)));
+					cab.setModel((rs.getString(2)));
+					cab.setCabType(cabType);
+					//cab.setLicenseNo((rs.getString(4)));
+					//cab.setDriverId((rs.getString(5)));
 
+			}
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+		}
+		return cab;
+	}
+//confirm booking ends
 	
 	@Override
 	public BookingRequestView getBookingRequests(Integer driverId) {
@@ -154,7 +186,7 @@ public class BookingDAOImpl implements BookingDAO {
 		Customer customer = null;
 		try {
 			ps = conn.prepareStatement(
-					"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,c.firstName, c.middleName, c.lastName,c.phoneNo from bookings b, customer c where b.driverId =?  and b.netId=c.netId");
+					"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,c.firstName, c.middleName, c.lastName,c.phoneNo from bookings b, customer c where b.driverId =?  and b.netId=c.netId and b.tripstatus='R'");
 			ps.setString(1, driverId.toString());
 			ResultSet rs = ps.executeQuery();
 			
@@ -181,7 +213,59 @@ public class BookingDAOImpl implements BookingDAO {
 
 	}
 
+	public void setRideStatus(String bookingid, String status) {
+		conn = db.getConnection();
+		try {
+		ps=conn.prepareStatement("update bookings set tripstatus = ? where bookingId = ?");
+		ps.setString(1, status);
+		ps.setString(2, bookingid);
+		ps.executeUpdate();
+		conn.close();
+	} catch (SQLException e) {
+		System.out.println(e);
+	}
+	}
 	
+	@Override
+	public ConfirmBookingView getDetails() {
+		conn = db.getConnection();
+		Booking booking = new Booking();
+		Location location = new Location();
+		//Customer customer = new Customer();
+		Driver driver = new Driver();
+		Cab cab = new Cab();
+		
+		//String cabType;
+		//CabType cabType = new CabType();
+		try {
+		ps = conn.prepareStatement(
+				"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,d.firstName,d.lastName,d.phoneNo, c.model from bookings b, driver d cab c where b.driverId=d.driverId and d.licenseNo= c.licenseNo");
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+		
+			booking.setBookingId(Integer.valueOf((rs.getString(1))));
+			booking.setNetId((rs.getString(2)));
+			location.setPickUpLocation(Place.valueOf(rs.getString(3)));
+			location.setDropOffLocation(Place.valueOf(rs.getString(4)));
+			booking.setLocation(location);
+			driver.setFirstName(rs.getString(5));
+			driver.setLastName(rs.getString(6));
+			driver.setPhoneNo(rs.getString(7));
+			cab.setModel(rs.getString(8));
+
+			
+		}
+		conn.close();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+	}
+		
+		return new ConfirmBookingView(driver, booking,cab);
+	
+
+	}
 	
 	
 }
+	

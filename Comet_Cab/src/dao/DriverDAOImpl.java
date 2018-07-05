@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import model.Driver;
 import db.DbManager;
@@ -62,4 +63,52 @@ public class DriverDAOImpl implements DriverDAO{
 		return d;
 	}
 
+	@Override
+	public void setDriverStatus(String bookingid, String status) {
+		conn = db.getConnection();
+		try {
+		ps=conn.prepareStatement("update driver set availability = ? where driverId = (select driverId from bookings where bookingId = ?)");
+		ps.setString(1, status);
+		ps.setString(2, bookingid);
+		ps.executeUpdate();
+		conn.close();
+	} catch (SQLException e) {
+		System.out.println(e);
+	}
+	}
+	
+	
+	@Override
+	public void makePayment(String bookingid) {
+		float updatedBal=0;
+		float fare=0;
+		String netId;
+		float balance=0;
+		conn = db.getConnection();
+		try {
+		ps=conn.prepareStatement("select b.fare,b.netId,c.balance from bookings b,carddetails c where bookingId = ? and b.netId=c.netId");
+		ps.setString(1, bookingid);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			fare = (Float.valueOf((rs.getString(1))));
+			netId=((rs.getString(2)));
+			balance = (Float.valueOf((rs.getString(3))));
+
+		updatedBal=balance - fare;
+		
+		try {
+		ps=conn.prepareStatement("update carddetails set balance = ? where netId = ? ");
+		ps.setFloat(1,(updatedBal));
+		ps.setString(2, netId);
+		ps.executeUpdate();
+		conn.close();
+	} catch (SQLException e) {
+		System.out.println(e);
+	}
+		}
+		
+} catch (SQLException e) {
+System.out.println(e);
+}
+}
 }

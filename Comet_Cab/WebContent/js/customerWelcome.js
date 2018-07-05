@@ -84,7 +84,7 @@ $(document).ready(function() {
 	        jQuery.ajax({
 	            url: "CustomerController",
 	            type: "post",
-	            dataType: "text",
+	            dataType: "json",
 	            data: {
 	                pick: pick,
 	                drop: drop,
@@ -94,10 +94,17 @@ $(document).ready(function() {
 	                fare: fare
 	            },
 	            success: function(dataBook) {
-	            	
-		            	$('#confirm').html('<p>'+dataBook+'</p>');
+	            		
+	            		var str = "Booking Confirmed!!!</br>";
+	            		str+= "Booking Id: "+dataBook.booking.bookingId+"</br>";
+	            		str+= "Driver Name: "+ dataBook.driver.firstName + " "+ dataBook.driver.lastName+"</br>";
+	            		str+= "Driver Phone No: "+ dataBook.driver.phoneNo+"</br>";
+	            		str+= "Cab Type: "+ dataBook.cab.cabType+"</br>";
+		            	str+= "Cab Number: "+ dataBook.driver.licenseNo+"</br>";
+		            	str+= "Cab Model: "+ dataBook.cab.model+"</br>";
+	            		$('#confirm').html('<p>'+str+'</p>');
 		            	$("#confirmBookingModal").modal();
-		           	
+		            	
 	            	
 	            }
 	        });

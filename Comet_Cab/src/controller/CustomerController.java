@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dao.CustomerDao;
 import dao.CustomerDaoImpl;
 import dao.CustomerLogin;
@@ -17,6 +19,7 @@ import model.Location;
 import model.Place;
 import service.BookingService;
 import service.BookingServiceImpl;
+import views.ConfirmBookingView;
 
 /**
  * Servlet implementation class Login
@@ -32,8 +35,9 @@ public class CustomerController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String submitType = request.getParameter("submit");
-		
+		System.out.println("Submit "+submitType);
 		if(submitType.equals("login") || submitType.equals("register")) {
+			System.out.println("Inside login");
 			String username = request.getParameter("username");
 			String pass = request.getParameter("password");
 			CustomerLogin login = new CustomerLogin(username, pass);
@@ -80,17 +84,20 @@ public class CustomerController extends HttpServlet {
 			CabType cabType = CabType.valueOf(cab.trim());
 			Location location = new Location(Place.valueOf(pickLoc.trim()), Place.valueOf(dropLoc.trim()));
 			BookingService bookingService = new BookingServiceImpl();
-			Booking book = bookingService.confirmBooking(netId, location, Float.valueOf(estfare), cabType);
-			
+			ConfirmBookingView book = bookingService.confirmBooking(netId, location, Float.valueOf(estfare), cabType);
+			String requests =  new Gson().toJson(book);
+			System.out.println(requests);
+		/*	
 			String bookingDetails="";
 			bookingDetails = "Booking Confirmed!!!</br>";
-		/*	bookingDetails+= "Booking Id: "+book.getBookingId()+"</br>";
+		    bookingDetails+= "Booking Id: "+book.getBookingId()+"</br>";
 			bookingDetails += "Driver Name: "+ book.getFirstName() + " "+ trip.getDriver().getLastName()+"</br>";
 			bookingDetails += "Cab Number: "+ book.getLicenseNo()+"</br>";
 			bookingDetails += "Your Cab will arrive in 5 minutes.\n";
-		*/	response.setContentType("application/text");
-		
-			response.getWriter().print(bookingDetails);
+		    
+		*/
+			response.setContentType("application/json");
+			response.getWriter().print(requests);
 	}
 			
 	}

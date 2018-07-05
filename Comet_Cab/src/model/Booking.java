@@ -8,7 +8,7 @@ public class Booking {
 	private CabType cabType;
 	private String netId;
 	private String driverId;
-	private String licenseNo;
+	//private String licenseNo;
 	private String tripStatus;
 	
 	public String getTripStatus() {
@@ -19,12 +19,13 @@ public class Booking {
 		this.tripStatus = tripStatus;
 	}
 
-	public Booking(Location location, float fare, CabType cabType, String netId) {
+	public Booking(Location location, float fare, CabType cabType, String netId,String driverId) {
 		super();
 		this.location = location;
 		this.fare = fare;
 		this.cabType = cabType;
 		this.netId = netId;
+		this.driverId = driverId;
 	}
 	
 	public Booking() {
@@ -75,14 +76,14 @@ public class Booking {
 		this.driverId = driverId;
 	}
 
-	public String getLicenseNo() {
+/*	public String getLicenseNo() {
 		return licenseNo;
 	}
 
 	public void setLicenseNo(String licenseNo) {
 		this.licenseNo = licenseNo;
 	}
-
+*/
 	public void setBookingId(int bookingId) {
 		this.bookingId = bookingId;
 	}

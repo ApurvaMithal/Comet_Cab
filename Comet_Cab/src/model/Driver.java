@@ -8,14 +8,6 @@ public class Driver extends Person {
 	private String licenseNo;
 	private boolean availability;
 	
-	
-	public boolean isAvailability() {
-		return availability;
-	}
-
-	public void setAvailability(boolean availability) {
-		this.availability = availability;
-	}
 
 	public Driver(String firstNm, String middleNm, String lastNm, String driverId, String password, String phoneNo,  String licenseNo){
 		super(firstNm,middleNm,lastNm);
@@ -30,6 +22,15 @@ public class Driver extends Person {
 		super();
 	}
 
+	
+	public boolean isAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(boolean availability) {
+		this.availability = availability;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}

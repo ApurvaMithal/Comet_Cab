@@ -4,14 +4,21 @@ public class CardDetails {
 
 	private String netId;
 	private float balance;
-	private String cardNo;
+//	private String cardNo;
 
+	public CardDetails(String netId, float balance) {
+		super();
+		this.netId = netId;
+		this.balance = balance;
+		}
+	
+	/*
 	public CardDetails(String netId, float balance, String cardNo) {
 		super();
 		this.netId = netId;
 		this.balance = balance;
 		this.cardNo = cardNo;
-	}
+	}*/
 	
 	public CardDetails() {
 	}
@@ -32,12 +39,12 @@ public class CardDetails {
 		this.balance = balance;
 	}
 
-	public String getCardNo() {
+/*	public String getCardNo() {
 		return cardNo;
 	}
 
 	public void setCardNo(String cardNo) {
 		this.cardNo = cardNo;
-	}
+	}*/
 
 }
