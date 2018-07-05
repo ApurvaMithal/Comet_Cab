@@ -20,7 +20,6 @@ public interface BookingDAO {
 	abstract BookingRequestView getBookingRequests(Integer driverId);
 	abstract Cab fetchCabDetails(String driverId);
 	abstract void setRideStatus(String bookingid, String status);
-	abstract ConfirmBookingView getDetails();
 
 
 }

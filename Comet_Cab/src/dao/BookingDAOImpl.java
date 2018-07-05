@@ -226,45 +226,6 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 	}
 	
-	@Override
-	public ConfirmBookingView getDetails() {
-		conn = db.getConnection();
-		Booking booking = new Booking();
-		Location location = new Location();
-		//Customer customer = new Customer();
-		Driver driver = new Driver();
-		Cab cab = new Cab();
-		
-		//String cabType;
-		//CabType cabType = new CabType();
-		try {
-		ps = conn.prepareStatement(
-				"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,d.firstName,d.lastName,d.phoneNo, c.model from bookings b, driver d cab c where b.driverId=d.driverId and d.licenseNo= c.licenseNo");
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()) {
-		
-			booking.setBookingId(Integer.valueOf((rs.getString(1))));
-			booking.setNetId((rs.getString(2)));
-			location.setPickUpLocation(Place.valueOf(rs.getString(3)));
-			location.setDropOffLocation(Place.valueOf(rs.getString(4)));
-			booking.setLocation(location);
-			driver.setFirstName(rs.getString(5));
-			driver.setLastName(rs.getString(6));
-			driver.setPhoneNo(rs.getString(7));
-			cab.setModel(rs.getString(8));
-
-			
-		}
-		conn.close();
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		System.out.println(e);
-	}
-		
-		return new ConfirmBookingView(driver, booking,cab);
-	
-
-	}
 	
 	
 }
