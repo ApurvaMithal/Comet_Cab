@@ -80,7 +80,7 @@
 <div class="row">
 	<div class="col-md-5"></div>
 	<div class="col-md-5">
-		<button type="button" class="btn btn-danger" style="height:30px;width:200px" id="makeBooking" name= "submit" value="makeBooking">Make Booking</button>
+		<button type="button" class="btn btn-danger" style="height:30px;width:200px" id="makeBooking" name= "submit" value="makeBooking">Reserve Booking</button>
 	</div>
 </div>
 </br></br>

@@ -37,43 +37,41 @@ public class BookingServiceImpl implements BookingService{
 	@Override
 	public ConfirmBookingView confirmBooking(String netId, Location location, float fare, CabType cabType) {
 		Driver allocatedDriver = bookingDao.allocateRide(cabType);
-		System.out.println("Booking ID before DAO  : "+allocatedDriver.getDriverId());
-		/*
-		 * if(allocatedDriver == null) { return trip; }
-		 */
+		boolean availability=false;
 		Booking newBooking = new Booking(location, fare, cabType, netId, allocatedDriver.getDriverId());
 		int id = bookingDao.saveBooking(newBooking);
 		newBooking.setBookingId(id);
-		// return new Trip(allocatedDriver, newBooking);
+		boolean driverStatus=bookingDao.setDriverStatus((String.valueOf(newBooking.getBookingId())),"F","T"); 
+		allocatedDriver.setAvailability(availability);
 		Cab cab = new Cab();
 		cab = bookingDao.fetchCabDetails(allocatedDriver.getDriverId());
 		newBooking.setBookingId(id);
 		newBooking.setTripStatus("R");
-		System.out.println("netid:"+newBooking.getNetId());
-		System.out.println("fare:"+newBooking.getFare());
-		System.out.println("trip status:"+newBooking.getTripStatus());
-		System.out.println("prick up:"+newBooking.getLocation().getPickUpLocation());
-		System.out.println("drop off:"+newBooking.getLocation().getDropOffLocation());
-		System.out.println("cab model:"+cab.getModel());
-		
-		
 		return new ConfirmBookingView(allocatedDriver, newBooking, cab );
-		//return null;
 	}
 
 		
 		
 	@Override
-	public void startRide(String bookingid) {
-		driverDao.setDriverStatus(bookingid, "F");
-		bookingDao.setRideStatus(bookingid, "P");
+	public boolean startRide(String bookingid) {
+		boolean flag = true;
+		if(!bookingDao.setRideStatus(bookingid, "P", "R"))
+			throw new ApplicationException("Booking Error");
+		return flag;
 	}
 
 	@Override
-	public void endRide(String bookingid) {
-		driverDao.setDriverStatus(bookingid, "T");
-		driverDao.makePayment(bookingid);
-		bookingDao.setRideStatus(bookingid,"C"); 
+	public boolean endRide(String bookingid) {
+		System.out.println("Begin endRide");
+		boolean flag = true;
+		if(!bookingDao.setDriverStatus(bookingid, "T","F"))
+			throw new ApplicationException("No ride is in progress");
+		if(!bookingDao.makePayment(bookingid))
+		    throw new ApplicationException("Payment unsuccessful");
+		if(!bookingDao.setRideStatus(bookingid,"C","P"))
+		    throw new ApplicationException("Booking Error");
+		System.out.println("End endRide");
+		return flag;
 		}
 		
 	

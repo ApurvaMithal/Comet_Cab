@@ -87,15 +87,6 @@ public class CustomerController extends HttpServlet {
 			ConfirmBookingView book = bookingService.confirmBooking(netId, location, Float.valueOf(estfare), cabType);
 			String requests =  new Gson().toJson(book);
 			System.out.println(requests);
-		/*	
-			String bookingDetails="";
-			bookingDetails = "Booking Confirmed!!!</br>";
-		    bookingDetails+= "Booking Id: "+book.getBookingId()+"</br>";
-			bookingDetails += "Driver Name: "+ book.getFirstName() + " "+ trip.getDriver().getLastName()+"</br>";
-			bookingDetails += "Cab Number: "+ book.getLicenseNo()+"</br>";
-			bookingDetails += "Your Cab will arrive in 5 minutes.\n";
-		    
-		*/
 			response.setContentType("application/json");
 			response.getWriter().print(requests);
 	}

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import db.DbManager;
+import exception.ApplicationException;
 import model.Booking;
 import model.Cab;
 import model.CabType;
@@ -43,11 +44,10 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public float estimateFare(Location location, CabType cabType) {
-		int distance=getDistance(location);
-		return (distance*cabType.getMultiplier());
+		int distance = getDistance(location);
+		return (distance * cabType.getMultiplier());
 	}
-	
-	
+
 	@Override
 	public boolean checkBalance(String netId, float fare) {
 		float balance = 0.0f;
@@ -65,7 +65,7 @@ public class BookingDAOImpl implements BookingDAO {
 			System.out.println(e);
 		}
 		return (balance >= fare ? true : false);
-	
+
 	}
 
 	@Override
@@ -86,10 +86,10 @@ public class BookingDAOImpl implements BookingDAO {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public Driver getAvailableDriver(CabType cabType) {
-	//	Driver driver = new Driver();
+		// Driver driver = new Driver();
 		Driver driver = null;
 		conn = db.getConnection();
 		try {
@@ -98,12 +98,12 @@ public class BookingDAOImpl implements BookingDAO {
 			ps.setString(1, cabType.name());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				    driver = new Driver();
-					driver.setFirstName((rs.getString(1)));
-					driver.setLastName((rs.getString(2)));
-					driver.setPhoneNo((rs.getString(3)));
-					driver.setLicenseNo((rs.getString(4)));
-					driver.setDriverId((rs.getString(5)));
+				driver = new Driver();
+				driver.setFirstName((rs.getString(1)));
+				driver.setLastName((rs.getString(2)));
+				driver.setPhoneNo((rs.getString(3)));
+				driver.setLicenseNo((rs.getString(4)));
+				driver.setDriverId((rs.getString(5)));
 
 			}
 			conn.close();
@@ -114,23 +114,24 @@ public class BookingDAOImpl implements BookingDAO {
 		return driver;
 	}
 
-	
-	@Override 	
-   public Driver allocateRide(CabType cabType) {
-		
-		Driver availableDriver=getAvailableDriver(cabType);
+	@Override
+	public Driver allocateRide(CabType cabType) {
+
+		Driver availableDriver = getAvailableDriver(cabType);
 		return availableDriver;
 	}
-	
+
 	@Override
 	public int saveBooking(Booking booking) {
 
 		int id = 0;
 		String generatedColumns[] = { "ID" };
 		try {
-			System.out.println("Booking ID in DAO : "+booking.getDriverId());
+			System.out.println("Booking ID in DAO : " + booking.getDriverId());
 			conn = db.getConnection();
-			ps=conn.prepareStatement("Insert into bookings(netId,pickupLocation,dropOffLocation,fare,cabtype,driverId) values(?,?,?,?,?,?)",generatedColumns);
+			ps = conn.prepareStatement(
+					"Insert into bookings(netId,pickupLocation,dropOffLocation,fare,cabtype,driverId) values(?,?,?,?,?,?)",
+					generatedColumns);
 			ps.setString(1, booking.getNetId());
 			ps.setString(2, booking.getLocation().getPickUpLocation().name());
 			ps.setString(3, booking.getLocation().getDropOffLocation().name());
@@ -140,16 +141,18 @@ public class BookingDAOImpl implements BookingDAO {
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
-				id=rs.getInt(1);
+				id = rs.getInt(1);
 			}
 			conn.close();
 		} catch (Exception e) {
 			System.out.println(e);
+			throw new ApplicationException("Net Id not available");
 		}
 		return id;
 
 	}
-//confirm booking code
+
+	// confirm booking code
 	@Override
 	public Cab fetchCabDetails(String DriverId) {
 		Cab cab = null;
@@ -160,13 +163,13 @@ public class BookingDAOImpl implements BookingDAO {
 			ps.setString(1, DriverId);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				    cab = new Cab();
-				    CabType cabType = CabType.valueOf(rs.getString(3).trim());
-					cab.setLicensePlateNo((rs.getString(1)));
-					cab.setModel((rs.getString(2)));
-					cab.setCabType(cabType);
-					//cab.setLicenseNo((rs.getString(4)));
-					//cab.setDriverId((rs.getString(5)));
+				cab = new Cab();
+				CabType cabType = CabType.valueOf(rs.getString(3).trim());
+				cab.setLicensePlateNo((rs.getString(1)));
+				cab.setModel((rs.getString(2)));
+				cab.setCabType(cabType);
+				// cab.setLicenseNo((rs.getString(4)));
+				// cab.setDriverId((rs.getString(5)));
 
 			}
 			conn.close();
@@ -176,8 +179,8 @@ public class BookingDAOImpl implements BookingDAO {
 		}
 		return cab;
 	}
-//confirm booking ends
-	
+	// confirm booking ends
+
 	@Override
 	public BookingRequestView getBookingRequests(Integer driverId) {
 		conn = db.getConnection();
@@ -189,7 +192,7 @@ public class BookingDAOImpl implements BookingDAO {
 					"select b.bookingId,b.netId,b.pickUpLocation,b.dropOffLocation,c.firstName, c.middleName, c.lastName,c.phoneNo from bookings b, customer c where b.driverId =?  and b.netId=c.netId and b.tripstatus='R'");
 			ps.setString(1, driverId.toString());
 			ResultSet rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				booking = new Booking();
 				location = new Location();
@@ -213,20 +216,71 @@ public class BookingDAOImpl implements BookingDAO {
 
 	}
 
-	public void setRideStatus(String bookingid, String status) {
+	public boolean setRideStatus(String bookingid, String status, String prevStatus) {
+		conn = db.getConnection();
+		int queryFlag = 0;
+		try {
+			ps = conn.prepareStatement("update bookings set tripstatus = ? where bookingId = ? and tripstatus=?");
+			ps.setString(1, status);
+			ps.setString(2, bookingid);
+			ps.setString(3, prevStatus);
+			queryFlag = ps.executeUpdate();
+			conn.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return (queryFlag == 1 ? true : false);
+	}
+
+	@Override
+	public boolean setDriverStatus(String bookingid, String status, String prevStatus) {
+		conn = db.getConnection();
+		int queryFlag = 0;
+		try {
+			ps = conn.prepareStatement(
+					"update driver set availability = ? where driverId = (select driverId from bookings where bookingId = ?) and  availability = ?");
+			ps.setString(1, status);
+			ps.setString(2, bookingid);
+			ps.setString(3, prevStatus);
+			queryFlag = ps.executeUpdate();
+			conn.close();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		System.out.println(queryFlag);
+		return (queryFlag == 1 ? true : false);
+	}
+
+	@Override
+	public boolean makePayment(String bookingid) {
+		float updatedBal = 0;
+		float fare = 0;
+		String netId;
+		float balance = 0;
+		int paymentSuccessFlag = 0;
 		conn = db.getConnection();
 		try {
-		ps=conn.prepareStatement("update bookings set tripstatus = ? where bookingId = ?");
-		ps.setString(1, status);
-		ps.setString(2, bookingid);
-		ps.executeUpdate();
-		conn.close();
-	} catch (SQLException e) {
-		System.out.println(e);
+			ps = conn.prepareStatement(
+					"select b.fare,b.netId,c.balance from bookings b,carddetails c where bookingId = ? and b.netId=c.netId");
+			ps.setString(1, bookingid);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				fare = (Float.valueOf((rs.getString(1))));
+				netId = ((rs.getString(2)));
+				balance = (Float.valueOf((rs.getString(3))));
+				updatedBal = balance - fare;
+
+				ps = conn.prepareStatement("update carddetails set balance = ? where netId = ? ");
+				ps.setFloat(1, (updatedBal));
+				ps.setString(2, netId);
+				paymentSuccessFlag = ps.executeUpdate();
+				conn.close();
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return (paymentSuccessFlag == 1 ? true : false);
 	}
-	}
-	
-	
-	
+
 }
-	

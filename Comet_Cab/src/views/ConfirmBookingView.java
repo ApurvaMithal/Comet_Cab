@@ -9,9 +9,30 @@ public class ConfirmBookingView {
 		this.driver = driver;
 		this.booking = booking;
 		this.cab = cab;
-}
+	}
 	Driver driver;
 	Booking booking;
-    Cab cab;
+	Cab cab;
+	
+	
+    public Driver getDriver() {
+		return driver;
+	}
+	public void setDriver(Driver driver) {
+		this.driver = driver;
+	}
+	public Booking getBooking() {
+		return booking;
+	}
+	public void setBooking(Booking booking) {
+		this.booking = booking;
+	}
+	public Cab getCab() {
+		return cab;
+	}
+	public void setCab(Cab cab) {
+		this.cab = cab;
+	}
+	
 
 } 

@@ -19,7 +19,9 @@ public interface BookingDAO {
 	abstract Driver allocateRide(CabType cabType);
 	abstract BookingRequestView getBookingRequests(Integer driverId);
 	abstract Cab fetchCabDetails(String driverId);
-	abstract void setRideStatus(String bookingid, String status);
+	abstract boolean setRideStatus(String bookingid, String status, String prevStatus);
+	abstract boolean setDriverStatus(String bookingid, String status, String prevStatus);
+	abstract boolean makePayment(String bookingid);
 
 
 }

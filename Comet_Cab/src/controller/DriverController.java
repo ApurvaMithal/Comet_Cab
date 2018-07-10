@@ -78,21 +78,6 @@ public class DriverController extends HttpServlet {
 			String requests =  new Gson().toJson(view);
 			System.out.println(requests);
 			response.getWriter().print(requests);
-		/*	try {
-				req.put("bookingId", "1");
-				req.put("firstName", "Tim");
-				req.put("middleName", "Williams");
-				req.put("lastName", "Williams");
-				req.put("phoneNo", "9876543210");
-				req.put("pick", "UTD");
-				req.put("drop", "Airport");
-				
-				requests.put(req);
-				response.getWriter().print(requests);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			*/
 		}
 		
 		else if(submitType.equals("startRide")) {
