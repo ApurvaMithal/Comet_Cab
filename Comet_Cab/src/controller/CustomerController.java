@@ -6,19 +6,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.Gson;
-
+import dao.BookingDAO;
+import dao.BookingDAOImpl;
 import dao.CustomerDao;
 import dao.CustomerDaoImpl;
 import dao.CustomerLogin;
+import exception.ApplicationException;
 import model.Booking;
 import model.CabType;
 import model.Customer;
 import model.Location;
 import model.Place;
-import service.BookingService;
-import service.BookingServiceImpl;
 import views.ConfirmBookingView;
 
 /**
@@ -63,33 +62,40 @@ public class CustomerController extends HttpServlet {
 			}
 			
 		}
-		else if (submitType.equals("makeBooking")) {
+		else if (submitType.equals("reserveBooking")) {
+			BookingDAO bokDao= new BookingDAOImpl();
 			String pickLoc = request.getParameter("pick");
 			String dropLoc = request.getParameter("drop");
 			String cab = request.getParameter("cab");
 			String netId = request.getParameter("netId");
 			CabType cabType = CabType.valueOf(cab.trim());
 			Location location = new Location(Place.valueOf(pickLoc.trim()), Place.valueOf(dropLoc.trim()));
-			BookingService bookingService = new BookingServiceImpl();
-			float fare = bookingService.makeBooking(netId, location, cabType);
-			String res = String.valueOf(fare);
-			response.setContentType("application/text");
-			response.getWriter().print(res);
+			Customer customer=new Customer();
+			customer.setNetId(netId);
+			try {
+				float fare = bokDao.reserveBooking(customer, location, cabType);
+				String res = String.valueOf(fare);
+				response.setContentType("application/text");
+				response.getWriter().print(res);
+			}
+			catch(ApplicationException e) {
+				response.getWriter().print(e.getErrorMessage());
+			}
 		} else if (submitType.equals("confirmBooking")) {
-			String pickLoc = request.getParameter("pick");
-			String dropLoc = request.getParameter("drop");
-			String cab = request.getParameter("cab");
-			String netId = request.getParameter("netId");
-			String estfare = request.getParameter("fare");
-			CabType cabType = CabType.valueOf(cab.trim());
-			Location location = new Location(Place.valueOf(pickLoc.trim()), Place.valueOf(dropLoc.trim()));
-			BookingService bookingService = new BookingServiceImpl();
-			ConfirmBookingView book = bookingService.confirmBooking(netId, location, Float.valueOf(estfare), cabType);
-			String requests =  new Gson().toJson(book);
+			BookingDAO bookDao= new BookingDAOImpl();
+			Integer bookingId = Integer.valueOf(request.getParameter("bookingId"));
+			Booking booking=new Booking();
+			booking.setBookingId(bookingId);
+			Booking confirmedBooking = bookDao.confirmBooking(booking);
+			String requests =  new Gson().toJson(confirmedBooking);
 			System.out.println(requests);
 			response.setContentType("application/json");
 			response.getWriter().print(requests);
 	}
+		 else if (submitType.equals("cancelBooking")) {
+				response.setContentType("application/text");
+				response.getWriter().print("BOOKING CANCELLED");
+		}
 			
 	}
 

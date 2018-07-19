@@ -1,6 +1,8 @@
 package exception;
 
-public class ApplicationException extends RuntimeException {
+import javax.servlet.ServletException;
+
+public class ApplicationException extends ServletException {
 
 	/**
 	 * 

@@ -7,14 +7,16 @@ public class Driver extends Person {
 	private String phoneNo;
 	private String licenseNo;
 	private boolean availability;
+	private Cab cab;
 	
 
-	public Driver(String firstNm, String middleNm, String lastNm, String driverId, String password, String phoneNo,  String licenseNo){
+	public Driver(String firstNm, String middleNm, String lastNm, String driverId, String password, String phoneNo,  String licenseNo,Cab cab){
 		super(firstNm,middleNm,lastNm);
 		this.driverId = driverId;
 		this.password = password;
 		this.phoneNo=phoneNo;
 		this.licenseNo = licenseNo;
+		this.cab=cab;
 
 	}
 
@@ -86,6 +88,14 @@ public class Driver extends Person {
 
 	public void setLicenseNo(String licenseNo) {
 		this.licenseNo = licenseNo;
+	}
+
+	public Cab getCab() {
+		return cab;
+	}
+
+	public void setCab(Cab cab) {
+		this.cab = cab;
 	}
 
 }

@@ -1,27 +1,16 @@
 package dao;
 
+import exception.ApplicationException;
 import model.Booking;
-import model.Cab;
 import model.CabType;
-import model.Driver;
+import model.Customer;
 import model.Location;
-import views.BookingRequestView;
-import views.ConfirmBookingView;
 
 public interface BookingDAO {
 
-	abstract int getDistance(Location location);
-	float estimateFare(Location location, CabType cabType);
-	abstract int saveBooking(Booking booking);
-	abstract Driver getAvailableDriver(CabType cabType);
-	abstract boolean checkBalance(String netId, float fare);	
-	abstract boolean checkCabAvailability(CabType cabType);
-	abstract Driver allocateRide(CabType cabType);
-	abstract BookingRequestView getBookingRequests(Integer driverId);
-	abstract Cab fetchCabDetails(String driverId);
-	abstract boolean setRideStatus(String bookingid, String status, String prevStatus);
-	abstract boolean setDriverStatus(String bookingid, String status, String prevStatus);
-	abstract boolean makePayment(String bookingid);
-
+	float reserveBooking(Customer customer,Location location, CabType cabType) throws ApplicationException;
+	Booking confirmBooking(Booking booking);
+	Booking getBookingRequests(Integer driverId);
+	boolean endRide(String bookingid) throws ApplicationException;
 
 }
