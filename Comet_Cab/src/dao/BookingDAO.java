@@ -8,9 +8,9 @@ import model.Location;
 
 public interface BookingDAO {
 
-	float reserveBooking(Customer customer,Location location, CabType cabType) throws ApplicationException;
+	Booking reserveBooking(Customer customer,Location location, CabType cabType) throws ApplicationException;
 	Booking confirmBooking(Booking booking);
 	Booking getBookingRequests(Integer driverId);
 	boolean endRide(String bookingid) throws ApplicationException;
-
+	void cancelBooking(Booking booking);
 }

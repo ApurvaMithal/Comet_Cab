@@ -93,6 +93,7 @@
 
 <input type="hidden" name="netId" value=${netId} id="netId"> </input>
 <input type="hidden" name="fare" value="None" id="fare"> </input>
+<input type="hidden" name="bookingId" value="None" id="bookingId"> </input>
 
 <!-- Modal -->
 <div id="reserveBookingModal" class="modal fade" role="dialog">

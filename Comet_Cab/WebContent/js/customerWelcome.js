@@ -48,7 +48,7 @@ $(document).ready(function() {
 	        jQuery.ajax({
 	            url: "CustomerController",
 	            type: "post",
-	            dataType: "text",
+	            dataType: "json",
 	            data: {
 	                pick: pick,
 	                drop: drop,
@@ -57,50 +57,49 @@ $(document).ready(function() {
 	                submit: submit
 	            },
 	            success: function(data) {
-	            	   
-	            	if(data!=null && data.substring(0,5)=="Error"){
+	            	if(data.error!=null){
+	            		if((!$("#confirmBooking").hasClass('disabled')))
+	            			$("#confirmBooking").addClass('disabled');
+	            		$('#reserve').html('<p>'+ "<h4> Exception Occurred: </h4>" + data.error+ '</br>' + '</p>');
+		            	$("#reserveBookingModal").modal();
+	            	}   
+	            /*	if(data!=null && data.substring(0,5)=="Error"){
 	            		if((!$("#confirmBooking").hasClass('disabled')))
 	            			$("#confirmBooking").addClass('disabled');
 	            		$('#reserve').html('<p>'+ "<h4> Exception Occurred: </h4>" + data+ '</br>' + '</p>');
 		            	$("#reserveBookingModal").modal();
-	            	}
-	            	else{
-	            		$('#fare').val(data);
+	            	}*/
+	            	else {
+	            		$('#fare').val(data.fare);
+	            		$('#bookingId').val(data.bookingId);
 	            		if(($("#confirmBooking").hasClass('disabled')))
 		            			$("#confirmBooking").removeClass('disabled');
-	            		$('#reserve').html('<p>'+ "Estimated Fare Is: " + data+ '</br>' + "Please Confirm The Ride within 1 minute. " + '</p>');
+	            		$('#reserve').html('<p>'+ "Estimated Fare Is: " + data.fare+ '</br>' + "Please Confirm The Ride within 1 minute. If not done then the booking will be cancelled. " + '</p>');
 		            	$("#reserveBookingModal").modal();
 		            	
-		            	var buttonTimer = setTimeout(cancelBooking, 5000);
+		            	var buttonTimer = setTimeout(cancelBooking, 30000);
 		            	 $("#confirmBooking").click(function(event) {
 		            		clearTimeout(buttonTimer);
-		         	        var pick = $('#pick').text();
-		         	        var drop = $('#drop').text();
-		         	        var cab = $('#cab').text();
-		         	        var netId = $('#netId').val();
+		            		var bookingId = $('#bookingId').val();
 		         	        var submit = $('#confirmBooking').val();
-		         	        var fare = $('#fare').val();
+		         	        
 		         	        jQuery.ajax({
 		         	            url: "CustomerController",
 		         	            type: "post",
 		         	            dataType: "json",
 		         	            data: {
-		         	                pick: pick,
-		         	                drop: drop,
-		         	                cab: cab,
-		         	                netId : netId,
-		         	                submit: submit,
-		         	                fare: fare
+		         	                bookingId : bookingId,
+		         	                submit: submit
 		         	            },
 		         	            success: function(dataBook) {
 		         	            		
 		         	            		var str = "Booking Confirmed!!!</br>";
-		         	            		str+= "Booking Id: "+dataBook.booking.bookingId+"</br>";
+		         	            		str+= "Booking Id: "+dataBook.bookingId+"</br>";
 		         	            		str+= "Driver Name: "+ dataBook.driver.firstName + " "+ dataBook.driver.lastName+"</br>";
 		         	            		str+= "Driver Phone No: "+ dataBook.driver.phoneNo+"</br>";
-		         	            		str+= "Cab Type: "+ dataBook.cab.cabType+"</br>";
+		         	            		str+= "Cab Type: "+ dataBook.driver.cab.cabType+"</br>";
 		         		            	str+= "Cab Number: "+ dataBook.driver.licenseNo+"</br>";
-		         		            	str+= "Cab Model: "+ dataBook.cab.model+"</br>";
+		         		            	str+= "Cab Model: "+ dataBook.driver.cab.model+"</br>";
 		         	            		$('#confirm').html('<p>'+str+'</p>');
 		         		            	$("#confirmBookingModal").modal();
 		         		            	
@@ -117,18 +116,19 @@ $(document).ready(function() {
 	    });
 	    
 	    function cancelBooking(){
+	    	 var bookingId = $('#bookingId').val();
 	    	 jQuery.ajax({
 		            url: "CustomerController",
 		            type: "post",
 		            dataType: "text",
 		            data: {
-		              //  bookingId: bookingId,
+		                bookingId: bookingId,
 		                submit: "cancelBooking"
 		            },
 		            success: function(data) {
 		            	if((!$("#confirmBooking").hasClass('disabled')))
 	            			$("#confirmBooking").addClass('disabled');
-		            	$('#cancel').html('<p>'+ "Oh no!! You didn't click on confirm booking.."+data+'</br>' + '</p>');
+		            	$('#cancel').html('<p>'+ "Oh no!! You didn't click on confirm booking. "+data+ '</br>' + '</p>');
 			            $("#cancelBookingModal").modal();
 		            	
 		            }

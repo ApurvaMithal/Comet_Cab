@@ -6,6 +6,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.gson.Gson;
 import dao.BookingDAO;
 import dao.BookingDAOImpl;
@@ -73,13 +77,29 @@ public class CustomerController extends HttpServlet {
 			Customer customer=new Customer();
 			customer.setNetId(netId);
 			try {
-				float fare = bokDao.reserveBooking(customer, location, cabType);
-				String res = String.valueOf(fare);
-				response.setContentType("application/text");
-				response.getWriter().print(res);
+				Booking book = bokDao.reserveBooking(customer, location, cabType);
+			//	String res = String.valueOf(book.getFare());
+			//	request.setAttribute("bookingId", book.getBookingId());
+			//	response.setContentType("application/text");
+			//	response.getWriter().print(res);
+
+				System.out.println("book.getBookingId() "+book.getBookingId());
+				String requests =  new Gson().toJson(book);
+				System.out.println("ReserveBooking: "+requests);
+				response.setContentType("application/json");
+				response.getWriter().print(requests);
 			}
 			catch(ApplicationException e) {
-				response.getWriter().print(e.getErrorMessage());
+				//String requests =  new Gson().toJson(e);
+				JSONObject obj= new JSONObject();
+				try {
+					obj.put("error", e.getErrorMessage());
+					response.setContentType("application/json");
+					response.getWriter().print(obj);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		} else if (submitType.equals("confirmBooking")) {
 			BookingDAO bookDao= new BookingDAOImpl();
@@ -88,11 +108,16 @@ public class CustomerController extends HttpServlet {
 			booking.setBookingId(bookingId);
 			Booking confirmedBooking = bookDao.confirmBooking(booking);
 			String requests =  new Gson().toJson(confirmedBooking);
-			System.out.println(requests);
+			System.out.println("ConfirmBooking: "+requests);
 			response.setContentType("application/json");
 			response.getWriter().print(requests);
 	}
 		 else if (submitType.equals("cancelBooking")) {
+			 	BookingDAO bookDao= new BookingDAOImpl();
+				Integer bookingId = Integer.valueOf(request.getParameter("bookingId"));
+				Booking booking=new Booking();
+				booking.setBookingId(bookingId);
+				bookDao.cancelBooking(booking);
 				response.setContentType("application/text");
 				response.getWriter().print("BOOKING CANCELLED");
 		}
