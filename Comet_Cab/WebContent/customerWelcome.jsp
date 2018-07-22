@@ -85,11 +85,13 @@
 </div>
 </br></br>
 <div class="row">
-	<div class="col-md-5"></div>
+	<div class="col-md-4"></div>
 	<div class="col-md-5">
 	<button type="button" class="btn btn-basic disabled" id="confirmBooking" style="height:30px;width:200px" name= "submit" value="confirmBooking">Confirm Booking </button>
+	<button type="button" class="btn btn-basic disabled" id="cancelBooking" style="height:30px;width:200px" name= "submit" value="cancelBooking">Cancel Booking </button>
 	</div>
 </div>
+
 
 <input type="hidden" name="netId" value=${netId} id="netId"> </input>
 <input type="hidden" name="fare" value="None" id="fare"> </input>

@@ -22,24 +22,32 @@ $(document).ready(function() {
 	        if($('#pick').val()=="None"){
         		if(!($("#confirmBooking").hasClass('disabled')))
         			$("#confirmBooking").addClass('disabled');
+        		if((!$("#cancelBooking").hasClass('disabled')))
+        			$("#cancelBooking").addClass('disabled');
         		$('#reserve').html('<p>'+'Select a Pickup Location '+'</p>');
             	$("#reserveBookingModal").modal();
         	}
         	else if($('#drop').val()=="None"){
         		if(!($("#confirmBooking").hasClass('disabled')))
         			$("#confirmBooking").addClass('disabled');
+        		if((!$("#cancelBooking").hasClass('disabled')))
+        			$("#cancelBooking").addClass('disabled');
         		$('#reserve').html('<p>'+'Select a Drop Location '+'</p>');
             	$("#reserveBookingModal").modal();
         	}
         	else if($('#cab').val()=="None"){
         		if(!($("#confirmBooking").hasClass('disabled')))
         			$("#confirmBooking").addClass('disabled');
+        		if((!$("#cancelBooking").hasClass('disabled')))
+        			$("#cancelBooking").addClass('disabled');
         		$('#reserve').html('<p>'+'Select a Cab Type '+'</p>');
             	$("#reserveBookingModal").modal();
         	}
         	else if(pick == drop){
         		if(!($("#confirmBooking").hasClass('disabled')))
         			$("#confirmBooking").addClass('disabled');
+        		if((!$("#cancelBooking").hasClass('disabled')))
+        			$("#cancelBooking").addClass('disabled');
         		$('#reserve').html('<p>'+'Pickup Location Cannot Be Same As Drop Location'+'</p>');
             	$("#reserveBookingModal").modal();	
         	} 
@@ -60,6 +68,8 @@ $(document).ready(function() {
 	            	if(data.error!=null){
 	            		if((!$("#confirmBooking").hasClass('disabled')))
 	            			$("#confirmBooking").addClass('disabled');
+	            		if((!$("#cancelBooking").hasClass('disabled')))
+	            			$("#cancelBooking").addClass('disabled');
 	            		$('#reserve').html('<p>'+ "<h4> Exception Occurred: </h4>" + data.error+ '</br>' + '</p>');
 		            	$("#reserveBookingModal").modal();
 	            	}   
@@ -74,6 +84,9 @@ $(document).ready(function() {
 	            		$('#bookingId').val(data.bookingId);
 	            		if(($("#confirmBooking").hasClass('disabled')))
 		            			$("#confirmBooking").removeClass('disabled');
+	            		if(($("#cancelBooking").hasClass('disabled')))
+	            			$("#cancelBooking").removeClass('disabled');
+	            		
 	            		$('#reserve').html('<p>'+ "Estimated Fare Is: " + data.fare+ '</br>' + "Please Confirm The Ride within 1 minute. If not done then the booking will be cancelled. " + '</p>');
 		            	$("#reserveBookingModal").modal();
 		            	
@@ -108,6 +121,11 @@ $(document).ready(function() {
 		         	        });
 		                 	
 		         	    });	
+		            	 $("#cancelBooking").click(function(event) {
+		            		 clearTimeout(buttonTimer);
+		            		 cancelBooking();
+			                 	
+			         	    });	
 	            		}	
 	            }
 	          
@@ -117,6 +135,7 @@ $(document).ready(function() {
 	    
 	    function cancelBooking(){
 	    	 var bookingId = $('#bookingId').val();
+	    	 
 	    	 jQuery.ajax({
 		            url: "CustomerController",
 		            type: "post",
@@ -128,6 +147,8 @@ $(document).ready(function() {
 		            success: function(data) {
 		            	if((!$("#confirmBooking").hasClass('disabled')))
 	            			$("#confirmBooking").addClass('disabled');
+		            	if((!$("#cancelBooking").hasClass('disabled')))
+	            			$("#cancelBooking").addClass('disabled');
 		            	$('#cancel').html('<p>'+ "Oh no!! You didn't click on confirm booking. "+data+ '</br>' + '</p>');
 			            $("#cancelBookingModal").modal();
 		            	
