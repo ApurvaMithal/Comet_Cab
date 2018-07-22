@@ -22,7 +22,6 @@ import model.CabType;
 import model.Customer;
 import model.Location;
 import model.Place;
-import views.ConfirmBookingView;
 
 /**
  * Servlet implementation class Login
