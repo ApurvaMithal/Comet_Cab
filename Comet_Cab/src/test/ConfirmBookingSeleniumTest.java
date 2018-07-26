@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class BookingSeleniumTest {
+public class ConfirmBookingSeleniumTest {
 
 	static WebDriver wDriver;
 
@@ -160,6 +160,10 @@ public class BookingSeleniumTest {
 		wDriver.findElement(By.xpath("//*[@id=\"reserveBookingModal\"]/div/div/div[3]/button")).click();
 		Thread.sleep(5000);
 		
+	}
+	
+	@Test
+	public void confirmBookingTest() throws InterruptedException {
 		
 		//Confirm Booking
 		wDriver.findElement(By.id("confirmBooking")).click();
@@ -170,18 +174,9 @@ public class BookingSeleniumTest {
 		wDriver.findElement(By.xpath("//*[@id=\"confirmBookingModal\"]/div/div/div[3]/button")).click();
 		Thread.sleep(30000);
 		
-		// reservation cancelled within one minute
-		//Cancel Booking
-		wDriver.findElement(By.id("cancelBooking")).click();
-		Thread.sleep(2500);
-		String cancelModal = wDriver.findElement(By.id("cancel")).getText();
-		System.out.println(cancelModal);
-		Assert.assertEquals(true, cancelModal.toLowerCase().contains("BOOKING CANCELLED".toLowerCase()));
-		wDriver.findElement(By.xpath("//*[@id=\"cancelBookingModal\"]/div/div/div[3]/button")).click();
-		Thread.sleep(3000);
-
 	}
-
+	
+	
 	@AfterClass
 	public static void closePage() {
 		wDriver.quit();

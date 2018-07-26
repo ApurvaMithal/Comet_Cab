@@ -1,3 +1,6 @@
-/test/
 /controller/
 /dao/
+/db/
+/exception/
+/model/
+/test/

@@ -55,7 +55,7 @@ public class BookingDAOImpl implements BookingDAO {
 			ps.executeUpdate();
 
 			ps = conn.prepareStatement(
-					"select c.licenseNo,c.model, c.cabType,d.firstName, d.lastName,d.phoneNo,d.licenseNo,d.driverId, b.fare from bookings b, cab c, driver d where b.bookingId=? and b.driverId=d.driverId and c.licenseNo=d.licenseNo");
+					"select c.licenseNo,c.model, c.cabType,d.firstName, d.lastName,d.phoneNo,d.licenseNo,d.driverId, b.fare, b.tripstatus from bookings b, cab c, driver d where b.bookingId=? and b.driverId=d.driverId and c.licenseNo=d.licenseNo");
 			ps.setLong(1, booking.getBookingId());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -73,6 +73,7 @@ public class BookingDAOImpl implements BookingDAO {
 				driver.setCab(cab);
 				booking.setDriver(driver);
 				booking.setFare(Float.valueOf(rs.getString(9)));
+				booking.setTripStatus((rs.getString(10)));
 			}
 			conn.close();
 		} catch (Exception e) {
