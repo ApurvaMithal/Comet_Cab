@@ -296,13 +296,14 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 
 	@Override
-	public void cancelBooking(Booking booking) {
+	public boolean cancelBooking(Booking booking) {
+		int queryFlag = 0;
 		String driverId=null;
 		try {
 			conn = db.getConnection();
 			ps = conn.prepareStatement("update bookings set tripstatus = 'C' where bookingId=?"); // C=cancelled
 			ps.setInt(1, booking.getBookingId());
-			ps.executeUpdate();
+			queryFlag = ps.executeUpdate();
 			
 			ps = conn.prepareStatement("select driverId from bookings where bookingId=?");
 			ps.setInt(1, booking.getBookingId());
@@ -318,6 +319,7 @@ public class BookingDAOImpl implements BookingDAO {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		return (queryFlag == 1 ? true : false);
 
 	}
 

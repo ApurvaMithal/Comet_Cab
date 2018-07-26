@@ -12,5 +12,5 @@ public interface BookingDAO {
 	Booking confirmBooking(Booking booking);
 	Booking getBookingRequests(Integer driverId);
 	boolean endRide(String bookingid) throws ApplicationException;
-	void cancelBooking(Booking booking);
+	boolean cancelBooking(Booking booking);
 }

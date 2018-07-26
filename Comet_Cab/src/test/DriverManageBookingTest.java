@@ -1,49 +1,48 @@
 package test;
-/*
+
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import model.Booking;
+import model.Customer;
+import dao.BookingDAO;
+import dao.BookingDAOImpl;
 
 import exception.ApplicationException;
-import service.BookingService;
-import service.BookingServiceImpl;
-public class DriverManageBookingTest {
 
-	static BookingService bookingService;
+public class DriverManageBookingTest {
 
 	@BeforeClass
 	public static void begin() {
-		bookingService = new BookingServiceImpl();
+		BookingDAO bookDao= new BookingDAOImpl();
 	}
 	
 
 	@Test
-	public void startRideTest() throws ApplicationException
+	public void getBookingRequestsTest() throws ApplicationException
 	{
-		assertEquals(bookingService.startRide("2"),true);
-	}
-	
-	@Test
-	public void startRideNullTest() throws ApplicationException
-	{
-		assertEquals(bookingService.startRide("1000"),true);
-	}
-	
+		BookingDAO bookDao= new BookingDAOImpl();
+	    Booking viewObj = new Booking();
+   		viewObj= bookDao.getBookingRequests((int)4);
+	    assertEquals(viewObj.getBookingId(),17);
+	    assertEquals(viewObj.getCustomer().getFirstName(),"a" );
+	    assertEquals(viewObj.getCustomer().getLastName(),"a" );
+	    assertEquals(viewObj.getLocation().getPickUpLocation().name(),"DPS"  );
+	    assertEquals(viewObj.getLocation().getDropOffLocation().name() ,"AIRPORT"  );
+		assertEquals(viewObj.getCustomer().getPhoneNo(),"a");
+	}	
+
 	
 	@Test
 	public void endRideTest() throws ApplicationException
-	{
-		assertEquals(bookingService.endRide("2"),true);
+	{   
+		BookingDAO bookDao= new BookingDAOImpl();
+		assertEquals(bookDao.endRide("17"),true);
 				 
 	}
 	
-	@Test
-	public void endRideNullTest() throws ApplicationException
-	{
-		assertEquals(bookingService.endRide("1000"),true);
-		 
+	
 	}
+	
 
-}
-*/

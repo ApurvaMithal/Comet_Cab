@@ -47,7 +47,7 @@
 		<font color="black"><h5> Drop Location </h5></font>
 		  <button class="btn btn-primary dropdown-toggle btn-success" type="button" data-toggle="dropdown" style="height:30px;width:200px" id="drop" value="None">Drop Location
 		  <span class="caret"></span></button>
-		  <ul class="dropdown-menu">
+		  <ul class="dropdown-menu" >
 		    <li><a href="#">UTD</a></li>
 		    <li><a href="#">SSN</a></li>
 		    <li><a href="#">DPS</a></li>
